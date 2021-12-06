@@ -10,6 +10,9 @@ func (app *application) routes() *httprouter.Router {
 	// Initialize a new httprouter instance
 	router := httprouter.New()
 
+	router.NotFound = http.HandlerFunc(app.notFoundResponse)
+	router.MethodNotAllowed = http.HandlerFunc(app.methodNotAllowedResponse)
+
 	//Register relevant methods, url patternms and handler functions for our endpoints using HandlerFunc() method.
 
 	router.HandlerFunc(http.MethodGet, "/v1/healthcheck", app.healthcheckHandler)
