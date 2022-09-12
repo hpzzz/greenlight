@@ -7,6 +7,8 @@ import (
 	"database/sql"
 	"encoding/base32"
 	"time"
+
+	"greenlight.karolharasim.net/internal/validator"
 )
 
 const (
@@ -86,4 +88,9 @@ func (m TokenModel) DeleteAllForUser(scope string, userId int64) error {
 
 	_, err := m.DB.ExecContext(ctx, query, scope, userId)
 	return err
+}
+
+func ValidateTokenPlaintext(v *validator.Validator, tokenPlaintext string) {
+	v.Check(tokenPlaintext != "", "token", "must be provided")
+	v.Check(len(tokenPlaintext) == 26, "token", "must be 26 bytes long")
 }
